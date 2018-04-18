@@ -1,0 +1,201 @@
+
+
+
+/*
+ *
+ *
+ *
+ 
+SortAnalysis will read in text files, 
+convert each line to an array, then
+order the files using Selection Sort 
+and Quick Sort Algorithms. 
+
+The time complexities 
+for each algorithm will be recorded. 
+
+*
+*
+*
+*/
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class SortAnalysis {
+	
+		public static void main(String[] args) {
+			
+			/*Reading input files*/
+			int[] input_file1 = text_toArray("Ran_50000"); 
+			int[] input_file2 = text_toArray("Ran_50000"); 
+
+			
+			/*Printing input file for Selection Sort*/
+			System.out.println("\n The input for Selection Sort: \n");
+			System.out.println(Arrays.toString(input_file1));
+			
+			/*Calling Selection Sort Method*/
+			long start_clock1 = System.currentTimeMillis();
+			
+			selectionSort(input_file1);
+			
+			long stop_clock1 = System.currentTimeMillis(); 
+			
+			/*Printing Results from Selection Sort Method*/
+			System.out.println("\n Selection Sort Output: \n");
+			System.out.println(Arrays.toString(input_file1));
+			System.out.println("\n Clock time: " + (stop_clock1 - start_clock1) + " miliseconds.\n");
+			
+			/*Printing input file for Quick Sort*/
+			System.out.println("The input for Quick Sort: ");
+			System.out.println(Arrays.toString(input_file2));
+
+			/*Calling Quick Sort Method*/
+			long start_clock2 = System.currentTimeMillis();
+
+			quickSort(input_file2, 0, input_file2.length - 1); 
+
+			long stop_clock2 = System.currentTimeMillis(); 
+			
+			/*Printing results from Quick Sort Method*/
+			System.out.println("\n Quick Sort Output:\n");
+			System.out.println(Arrays.toString(input_file2));
+			System.out.println("\n Clock time: " + (stop_clock2 - start_clock2) + " miliseconds. \n");
+			
+			
+		}
+		
+		/*a method to read files into an array*/
+		public static int[] text_toArray(String file) {
+			
+			try{
+				
+				File uo_numsText = new File(file); //make new file object
+				Scanner scan1 = new Scanner(uo_numsText); 
+				
+				int array_size = 0; //counter to make array size
+				
+				/*while reading each line, increase arrSize*/
+				while(scan1.hasNextInt()){
+					
+					array_size++;
+					scan1.nextInt();
+					
+				} 
+				
+				
+				int[] uo_numsArray = new int[array_size]; //initialize unordered array of ints with arrSize
+				
+				Scanner scan2 = new Scanner(uo_numsText); 
+				
+				for (int i = 0; i < uo_numsArray.length; i++)
+					
+					uo_numsArray[i] = scan2.nextInt(); //storing ints on each line of input file to an array
+				
+					return uo_numsArray; //pass array to main
+				
+			}
+			
+			catch(Exception e){
+				return null;
+				
+			}
+		}
+
+		
+		/*Selection Sort Method O(n^2)*/
+		public static void selectionSort(int[] ss_array){
+		
+			
+			/*Selection Sort Algorithm*/
+			for(int i = 0; i < ss_array.length - 1; ++i){ 
+				
+				int smallest_index = i; //assume the array is already sorted
+	
+				for(int j = i + 1; j < ss_array.length; j++){
+					
+					
+					if (ss_array[j] < ss_array[smallest_index]){  
+				
+						/*Comparing inequality*/
+						smallest_index = j; 
+					
+					}
+					
+					/*Perform the swaps*/
+					int temp = ss_array[i];
+					ss_array[i] = ss_array[smallest_index];
+					ss_array[smallest_index] = temp;	
+					
+				}
+			
+			}
+			
+			
+			
+			
+		}
+		
+			/*The Quick Sort Method*/
+			public static void quickSort(int[] arr, int low, int high){
+
+				/*Quick Sort Recursive Algorithm*/
+				int i = low;
+				int j = high;
+				int midpoint = low + (high - low) / 2; //access middle of array
+				int pivot = arr[midpoint]; //pivot is used for comparisons
+				
+				
+				if(arr == null || arr.length == 0){
+					return;			
+				}
+			
+				if(low >= high){
+					return;
+				}
+				
+				while(i <= j){
+			
+					/*Compare ints*/
+					while(arr[i] < pivot){
+						i++;
+					}
+			
+					while(arr[j] > pivot){
+						j--;
+					}
+			
+			
+					if(i <= j){
+			
+						/*Perform swaps*/
+						int temp = arr[i];
+						arr[i] = arr[j];
+						arr[j] = temp;
+		
+						i++;
+						j--;
+			
+					}
+	
+				}
+		
+				/*Recursive Steps*/
+				if(low < j){
+					quickSort(arr, low, j);
+				}
+			
+				if(high > i){
+					quickSort(arr, i, high);
+				}
+				
+			}
+			
+}
+
+
+	
+
+
